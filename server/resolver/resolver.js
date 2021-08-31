@@ -1,17 +1,16 @@
+const { movies, directors } = require('../mocks/data');
 const resolvers = {
     Query: {
-        movies: () => [
-            {
-                id: 1,
-                name: 'Harry Potter and the Chamber of Secrets',
-                genre: 'Fantasy',
-            },
-            {
-                id: 2,
-                name: 'Jurassic Park',
-                genre: 'Science Fiction',
-            },
-        ]
+        movies: () => movies,
+        movie: (parent, args) => movies.find(movie => movie.id === +args.id),
+        directors: () => directors,
+        director: (parent, args) => directors.find(director => director.id == +args.id),
+    },
+    Movie: {
+        director: (parent) => directors.find(director => director.id === parent.directorId),
+    },
+    Director: {
+        movies: (parent) => movies.filter(movie => movie.directorId === parent.id),
     }
 }
 
